@@ -76,7 +76,7 @@ class Response:
         blank = "\r\n"
         blank_encoded = blank.encode()
 
-        op = response_encoded + header_encoded + cl_encoded + set_cookie_encoded + blank_encoded + self.byte_body
+        op = response_encoded + header_encoded + ct_encoded + cl_encoded + set_cookie_encoded + blank_encoded + self.byte_body
         return op
 
 
@@ -86,6 +86,8 @@ def test1():
     res.text("hello")
     expected = b'HTTP/1.1 200 OK\r\nContent-Type: text/plain; charset=utf-8\r\nContent-Length: 5\r\n\r\nhello'
     actual = res.to_data()
+    print("expected:", expected)
+    print("actual  :", actual)
 
 
 if __name__ == '__main__':
