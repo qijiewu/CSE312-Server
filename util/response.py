@@ -1,30 +1,76 @@
 import json
 
-
 class Response:
     def __init__(self):
-        pass
+
+        self.status_code = 200
+        self.status_text = 'OK'
+        self.header_dict = {}
+        self.cookie_dict = {}
+        self.byte_body = b""
+        self.content_type = None
 
     def set_status(self, code, text):
-        pass
+        self.status_code = code
+        self.status_text = text
+        return self
 
     def headers(self, headers):
-        pass
+        for key in headers: #headers = {key = value, key1 = value1}
+            self.header_dict[key] = headers[key]
+        return self
 
     def cookies(self, cookies):
-        pass
+        for key in cookies:
+            self.cookie_dict[key] = cookies[key]
+        return self
 
     def bytes(self, data):
-        pass
+        self.byte_body = self.byte_body + data
+        return self
 
     def text(self, data):
-        pass
+        data = data.encode()
+        self.byte_body += data
+        return self
 
     def json(self, data):
-        pass
+        json_data = json.dumps(data)
+        self.byte_body = json_data.encode()
+        self.content_type = "application/json"
+        return self
 
     def to_data(self):
-        return b''
+        #request + header(ct, cl, ck) + body
+        response = "HTTP/1.1" + " " + str(self.status_code) + " " + self.status_text + "\r\n"
+        #request line
+        response_encoded = response.encode()
+
+        if self.content_type:
+            content_type = self.content_type
+        else:
+            content_type = "text/plain; charset=utf-8"
+        ct = "Content-Type: " + content_type + "\r\n"
+        #content type
+        ct_encoded = ct.encode()
+
+        content_length = len(self.byte_body)
+        cl = "Content-Length: " + str(content_length) + "\r\n"
+        #content length
+        cl_encoded = cl.encode()
+
+        set_cookie = ""
+        for key in self.cookie_dict:
+            set_cookie += "Set-Cookie: " + key + "=" + self.cookie_dict[key] + "\r\n"
+        #set cookie
+        set_cookie_encoded = set_cookie.encode()
+
+        blank = "\r\n"
+        blank_encoded = blank.encode()
+
+        op = response_encoded + ct_encoded + cl_encoded + set_cookie_encoded + blank_encoded + self.byte_body
+        return op
+
 
 
 def test1():
