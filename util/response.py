@@ -1,4 +1,6 @@
 import json
+from email.quoprimime import header_encode
+
 
 class Response:
     def __init__(self):
@@ -41,10 +43,16 @@ class Response:
         return self
 
     def to_data(self):
-        #request + header(ct, cl, ck) + body
+        #request + header + ct, cl, ck + body
         response = "HTTP/1.1" + " " + str(self.status_code) + " " + self.status_text + "\r\n"
         #request line
         response_encoded = response.encode()
+
+        header = ""
+        for key in self.header_dict:
+            header += key + ": " + str(self.header_dict[key]) + "\r\n"
+        #header
+        header_encoded = header.encode()
 
         if self.content_type:
             content_type = self.content_type
@@ -68,7 +76,7 @@ class Response:
         blank = "\r\n"
         blank_encoded = blank.encode()
 
-        op = response_encoded + ct_encoded + cl_encoded + set_cookie_encoded + blank_encoded + self.byte_body
+        op = response_encoded + header_encoded + cl_encoded + set_cookie_encoded + blank_encoded + self.byte_body
         return op
 
 
