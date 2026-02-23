@@ -73,10 +73,14 @@ class Response:
         #set cookie
         set_cookie_encoded = set_cookie.encode()
 
+        nosniff = "X-Content-Type-Options: nosniff\r\n"
+        #sniff
+        nosniff_encoded = nosniff.encode()
+
         blank = "\r\n"
         blank_encoded = blank.encode()
 
-        op = response_encoded + header_encoded + ct_encoded + cl_encoded + set_cookie_encoded + blank_encoded + self.byte_body
+        op = response_encoded + header_encoded + ct_encoded + cl_encoded + nosniff_encoded + set_cookie_encoded + blank_encoded + self.byte_body
         return op
 
 

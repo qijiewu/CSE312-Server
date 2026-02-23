@@ -59,5 +59,5 @@ def page_render(request, handler):
 
     res = Response()
     res.text(html)
-    res.content_type = "text/html"
+    res.content_type = "text/html; charset=utf-8"
     handler.request.sendall(res.to_data())

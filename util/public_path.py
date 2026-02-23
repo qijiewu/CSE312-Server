@@ -1,8 +1,9 @@
 from util.response import Response
 
-def file_send(request, handler):
+def public_path(request, handler):
 
     file_path = request.path[1:]
+    content_type = "text/plain; charset=utf-8"
 
     if file_path.endswith(".jpg"):
         content_type = "image/jpeg"
@@ -13,11 +14,11 @@ def file_send(request, handler):
     elif file_path.endswith(".webp"):
         content_type = "image/webp"
     elif file_path.endswith(".js"):
-        content_type = "text/javascript"
+        content_type = "text/javascript; charset=utf-8"
     elif file_path.endswith(".css"):
-        content_type = "text/css"
+        content_type = "text/css; charset=utf-8"
     elif file_path.endswith(".html"):
-        content_type = "text/html"
+        content_type = "text/html; charset=utf-8"
 
     with open(file_path, "rb") as f:
         file = f.read()
