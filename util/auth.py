@@ -164,7 +164,7 @@ def update_profile(request, handler):
     username, password = extract_credentials(request)
     auth_token = request.cookies.get("auth_token")
     hash_token = hashlib.sha256(auth_token.encode()).hexdigest()
-    user = user_collection.find_one({"username": username})
+    user = user_collection.find_one({"auth_token": hash_token})
     if auth_token is not None:
         if hash_token == user["auth_token"]:
             if password == "":
