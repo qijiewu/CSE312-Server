@@ -5,6 +5,7 @@ from util.hello_path import hello_path
 from util.public_path import public_path
 from util.render import page_render
 from util.chat import create_chat, get_chat, update_chat, delete_chat, add_reaction, delete_reaction
+from util.auth import registration, login, logout, get_profile, search_user, update_profile
 
 
 class MyTCPHandler(socketserver.BaseRequestHandler):
@@ -38,6 +39,14 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
         self.router.add_route("DELETE", "/api/chats", delete_chat, False)
         self.router.add_route("PATCH", "/api/reaction", add_reaction, False)
         self.router.add_route("DELETE", "/api/reaction", delete_reaction, False)
+
+        self.router.add_route("POST", "/register", registration, True)
+        self.router.add_route("POST", "/login", login, True)
+        self.router.add_route("GET", "/logout", logout, True)
+
+        self.router.add_route("GET", "/api/users/@me", get_profile, True)
+        self.router.add_route("GET", "/api/users/search", search_user, False)
+        self.router.add_route("POST", "/api/users/settings", update_profile, False)
 
         super().__init__(request, client_address, server)
 

@@ -1,0 +1,13 @@
+docker ps
+
+docker exec -it cse312-server-mongo-1 mongo
+
+use cse312
+
+use chat
+
+use user
+
+db.user.deleteMany({})
+
+db.user.find().pretty()

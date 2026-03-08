@@ -1,6 +1,4 @@
 import json
-from email.quoprimime import header_encode
-
 
 class Response:
     def __init__(self):
