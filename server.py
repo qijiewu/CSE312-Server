@@ -5,7 +5,7 @@ from util.hello_path import hello_path
 from util.public_path import public_path
 from util.render import page_render
 from util.chat import create_chat, get_chat, update_chat, delete_chat, add_reaction, delete_reaction
-from util.auth import registration, login, logout, get_profile, search_user, update_profile
+from util.auth import registration, login, logout, get_profile, search_user, update_profile, enable_totp, auth_github, auth_callback
 
 
 class MyTCPHandler(socketserver.BaseRequestHandler):
@@ -47,6 +47,10 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
         self.router.add_route("GET", "/api/users/@me", get_profile, True)
         self.router.add_route("GET", "/api/users/search", search_user, False)
         self.router.add_route("POST", "/api/users/settings", update_profile, False)
+        self.router.add_route("POST", "/api/totp/enable", enable_totp, True)
+        self.router.add_route("GET", "/authgithub", auth_github, False)
+        self.router.add_route("GET", "/authcallback", auth_callback, False)
+
 
         super().__init__(request, client_address, server)
 
