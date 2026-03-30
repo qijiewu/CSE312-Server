@@ -54,13 +54,18 @@ def get_chat(request, handler):
         updated = data["updated"]
         content = escape_html(data["content"])
         reaction = data.get("reactions", {})
+        image_url = "/public/imgs/user.webp"
+        user = user_collection.find_one({"username": author})
+        if user is not None and "imageURL" in user:
+            image_url = user["imageURL"]
 
         data_dict = {
             "author": author,
             "id": id,
             "updated": updated,
             "content": content,
-            "reactions": reaction
+            "reactions": reaction,
+            "imageURL": image_url
         }
         get_data.append(data_dict)
     res = Response()

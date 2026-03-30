@@ -26,7 +26,7 @@ def page_render(request, handler):
     elif request.path == "/search-users":
         file = "search-users.html"
 
-    elif request.path == "/set-thumbnail":
+    elif request.path.startswith("/videotube/set-thumbnail"):
         file = "set-thumbnail.html"
 
     elif request.path == "/settings":
@@ -47,7 +47,10 @@ def page_render(request, handler):
     elif request.path == "/videotube":
         file = "videotube.html"
 
-    elif request.path == "/view-video":
+    elif request.path == "/videotube/upload":
+        file = "upload.html"
+
+    elif request.path.startswith("/videotube/videos/"):
         file = "view-video.html"
 
     with open("public/layout/layout.html", "r") as f:
